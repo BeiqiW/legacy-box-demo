@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: legacy-box-demo
+    runtime: node
+    plan: free
+    # Install deps, seed the bilingual SQLite demo data, then build.
+    buildCommand: npm install && npm run seed && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: LEGACY_JWT_SECRET
+        generateValue: true
