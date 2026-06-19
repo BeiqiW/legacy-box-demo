@@ -1,0 +1,19 @@
+name: keep-warm
+# Pings the Render service so the free instance doesn't spin down
+# (prevents cold-start "unstyled" loads in the embedded demo).
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Render
+        run: |
+          for i in 1 2 3; do
+            code=$(curl -sS -m 90 -o /dev/null -w "%{http_code}" https://legacy-box-demo.onrender.com/ || echo "000")
+            echo "ping $i -> $code"
+            [ "$code" = "200" ] && break
+            sleep 20
+          done
