@@ -1,0 +1,20 @@
+name: deploy-to-render
+# Auto-trigger a Render deploy on every push to master
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render deploy
+        run: |
+          code=$(curl -sS -X POST \
+            "https://api.render.com/v1/services/srv-d8qftnegvqtc73a6qoj0/deploys" \
+            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{"clearCache":"do_not_clear"}' \
+            -o /dev/null -w "%{http_code}")
+          echo "Render deploy triggered -> HTTP $code"
+          [ "$code" = "201" ] || [ "$code" = "200" ]
