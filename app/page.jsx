@@ -67,7 +67,7 @@ export default async function Home() {
             </div>
 
             <h1 className="font-display text-6xl md:text-7xl lg:text-8xl leading-[1.05] hero-text-glow animate-fade-up delay-2">
-              <span className="font-display-cn">陈氏家族</span>
+              <span className={locale === 'en' ? '' : 'font-display-cn'}>{pick(locale, '陈氏家族', "Chen's Family")}</span>
               <br />
               <span className="text-gold-gradient italic font-light">Legacy</span>
             </h1>
